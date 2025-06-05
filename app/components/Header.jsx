@@ -6,7 +6,7 @@ export default function Header() {
         <header className="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white py-4 shadow-lg">
             <div className="container mx-auto px-4 flex justify-between items-center">
                 <h1 className="text-2xl font-bold">
-                    <Link href="/">AI Tarot Insights</Link>
+                    <Link href="/">AI Starcard Insights</Link>
                 </h1>
                 <nav className="space-x-4">
                     <Link href="/" className="hover:underline">Home</Link>

@@ -411,7 +411,7 @@ export default function Home() {
             >
               ✨
             </motion.span>
-            AI Tarot Insights
+            AI Star Card Insights
             <motion.span
               animate={{ rotate: [0, 360] }}
               transition={{
@@ -441,7 +441,7 @@ export default function Home() {
               }}
             >
               <h2 className="text-xl gradient-title sm:text-2xl md:text-5xl font-semibold mb-4">
-                Discover AI-Powered Tarot Readings
+                Discover AI-Powered Star Card Readings
               </h2>
             </MotionWrapperDelay>
 
@@ -595,7 +595,7 @@ export default function Home() {
 
             <Link href="/readingchoice">
               <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                Get Your AI Tarot Reading
+                Get Your AI Star Card Reading
               </button>
             </Link>
 
@@ -608,7 +608,10 @@ export default function Home() {
 
       <footer className="bg-gray-800 text-white py-4">
         <div className="container mx-auto px-4 text-center">
-          <p>© 2025 AI Tarot Insights. Your path illuminated by AI wisdom.</p>
+          <p>
+            © 2025 AI Star Card Tarot Insights. Your path illuminated by AI
+            wisdom.
+          </p>
         </div>
       </footer>
     </div>
