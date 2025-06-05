@@ -108,9 +108,9 @@ export function Card({ card, isFlipped, onClick }) {
             className="m-4 flex flex-col items-center"
         >
             <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-                {/* Front of card - unchanged */}
+                {/* Front of card */}
                 <div
-                    className="w-48 h-72 bg-yellow-300 rounded-lg cursor-pointer"
+                    className="w-64 h-96 bg-yellow-300 rounded-lg cursor-pointer"  // Changed from w-48 h-72
                     onClick={onClick}
                     style={{
                         backgroundImage: `url(${imagePath})`,
@@ -119,9 +119,9 @@ export function Card({ card, isFlipped, onClick }) {
                     }}
                 />
 
-                {/* Back of card - enhanced dark gothic with moving colors */}
+                {/* Back of card */}
                 <div
-                    className="w-48 h-72 rounded-lg flex items-center justify-center p-4 cursor-pointer text-center relative overflow-hidden border-2"
+                    className="w-64 h-96 rounded-lg flex items-center justify-center p-4 cursor-pointer text-center relative overflow-hidden border-2"  // Changed from w-48 h-72
                     onClick={onClick}
                     style={{
                         background: 'linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 25%, #0a0a1a 50%, #1a1a0a 75%, #0a0a0a 100%)',

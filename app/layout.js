@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/Header"; // adjust path if needed
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       <body className="bg-gradient-to-br from-purple-900 to-indigo-800 text-white min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">{children}</main>
+        <Toaster richColors />
       </body>
     </html>
   );

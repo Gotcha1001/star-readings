@@ -372,6 +372,10 @@ import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 
 const carouselSlides = [
+  { src: "/1.jpg", alt: "Tarot Path to Insight" },
+  { src: "/2.jpg", alt: "Tarot Path to Insight" },
+  { src: "/9.jpg", alt: "Tarot Path to Insight" },
+  { src: "/17.jpg", alt: "Tarot Path to Insight" },
   { src: "/tarot1.jpg", alt: "Tarot Reading Scene" },
   { src: "/tarot2.jpg", alt: "Mystical Tarot Deck" },
   { src: "/tarot3.jpg", alt: "AI-Powered Tarot Insights" },
