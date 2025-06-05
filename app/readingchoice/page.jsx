@@ -649,7 +649,7 @@ export default function ReadingChoice() {
                             </p>
                         </div>
                         {/* Back Button */}
-                        <Link href="/">
+                        {/* <Link href="/">
                             <motion.button
                                 whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(168, 85, 247, 0.5)" }}
                                 whileTap={{ scale: 0.95 }}
@@ -657,7 +657,7 @@ export default function ReadingChoice() {
                             >
                                 Back to Home
                             </motion.button>
-                        </Link>
+                        </Link> */}
                     </motion.div>
                 </section>
             </main>
