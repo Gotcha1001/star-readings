@@ -1,11 +1,9 @@
-
-
-
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Input } from "@/components/ui/input"; // Import shadcn/ui Input
 import Button from "../../components/Button";
 import CardSpread from "../../components/CardSpread";
 import AIStarReading from "../../components/AIStarReading";
@@ -15,7 +13,7 @@ import { drawStarCards } from "@/app/data/drawStarCards";
 import FeatureMotionWrapper from "@/app/components/FramerMotion/FeatureMotionWrapperMap";
 import MotionWrapperDelay from "@/app/components/FramerMotion/MotionWrapperDelay";
 
-
+// Existing zodiacWeights, ageWeights, numerologyDescriptions, letterMeanings, spreadConfig
 const zodiacWeights = {
     Aries: { primary: "Mind", secondary: "Destiny" },
     Taurus: { primary: "Body", secondary: "Relationships" },
@@ -157,6 +155,7 @@ const spreadConfig = {
     },
 };
 
+// Existing getZodiacSign, calculateAge, getBirthDayInfo, getAstrologicalProfile, calculateNameBreakdown
 function getZodiacSign(birthday) {
     if (!birthday || !birthday.match(/^\d{4}-\d{2}-\d{2}$/)) return null;
     const [year, month, day] = birthday.split("-").map(Number);
@@ -405,6 +404,11 @@ function calculateNameBreakdown(name) {
     return { breakdown, sum, nameValue };
 }
 
+// Utility function to detect mobile devices
+const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 export default function StarReadingContent() {
     const searchParams = useSearchParams();
     const spreadId = searchParams.get("spread") || "past-present-future";
@@ -432,7 +436,7 @@ export default function StarReadingContent() {
     const handleBirthDateChange = useCallback((e) => {
         const value = e.target.value;
         setBirthDate(value);
-        if (value) {
+        if (value && value.match(/^\d{4}-\d{2}-\d{2}$/)) {
             const sign = getZodiacSign(value);
             setStarSign(sign || "");
             const calculatedAge = calculateAge(value);
@@ -464,9 +468,9 @@ export default function StarReadingContent() {
             console.log("Draw Cards Blocked: Name is empty");
             return;
         }
-        if (!birthDate) {
-            setApiError("Please enter a valid birth date.");
-            console.log("Draw Cards Blocked: Birth date missing");
+        if (!birthDate || !birthDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            setApiError("Please enter a valid birth date in YYYY-MM-DD format.");
+            console.log("Draw Cards Blocked: Invalid birth date");
             return;
         }
         setIsLoading(true);
@@ -525,8 +529,9 @@ export default function StarReadingContent() {
                     hidden: { opacity: 0, y: -100 },
                     visible: { opacity: 1, y: 0 },
                 }}
-
-            > <h1 className="text-3xl font-bold mb-6 gradient-title text-white">Star Cards: {spread.name}</h1>  </MotionWrapperDelay>
+            >
+                <h1 className="text-3xl font-bold mb-6 gradient-title text-white">Star Cards: {spread.name}</h1>
+            </MotionWrapperDelay>
             <MotionWrapperDelay
                 initial="hidden"
                 whileInView="visible"
@@ -536,27 +541,38 @@ export default function StarReadingContent() {
                     hidden: { opacity: 0, x: -100 },
                     visible: { opacity: 1, x: 0 },
                 }}
-            >    <p className="text-base text-gray-300 mb-6 text-center max-w-2xl">{spread.description}</p></MotionWrapperDelay>
+            >
+                <p className="text-base text-gray-300 mb-6 text-center max-w-2xl">{spread.description}</p>
+            </MotionWrapperDelay>
 
-            <div className="mb-6 space-y-3">
-                <input
-                    className="p-2.5 rounded-lg text-black w-full max-w-md bg-white border border-gray-300 focus:ring-2 focus:ring-purple-500"
+            <div className="mb-6 space-y-4 w-full max-w-md">
+                <Input
                     placeholder="Your Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    className="w-full"
                 />
-                <input
-                    className="p-2.5 rounded-lg text-black w-full max-w-md bg-white border border-gray-300 focus:ring-2 focus:ring-purple-500"
-                    type="date"
+                <Input
+                    type={isMobileDevice() ? "text" : "date"}
+                    placeholder={isMobileDevice() ? "YYYY-MM-DD" : undefined}
+                    pattern={isMobileDevice() ? "\\d{4}-\\d{2}-\\d{2}" : undefined}
                     value={birthDate}
                     onChange={handleBirthDateChange}
+                    title="Enter birth date in YYYY-MM-DD format (e.g., 1990-05-15)"
+                    className="w-full"
                 />
                 {starSign && (
                     <p className="text-sm text-center text-purple-300">
                         🌟 Your star sign is <span className="font-semibold">{starSign}</span>
                     </p>
                 )}
+                {apiError && birthDate && !birthDate.match(/^\d{4}-\d{2}-\d{2}$/) && (
+                    <p className="text-sm text-center text-red-500">
+                        Please enter a valid date in YYYY-MM-DD format (e.g., 1990-05-15).
+                    </p>
+                )}
             </div>
+
             {nameValue && nameBreakdown && ageCategory && age && starSign && birthDayInfo && astroProfile && (
                 <div className="mb-8 p-8 bg-gradient-to-r from-purple-900 via-indigo-500 to-black rounded-xl text-white max-w-2xl mx-auto border border-purple-300/30 shadow-lg">
                     <MotionWrapperDelay
@@ -568,7 +584,9 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, y: 100 },
                             visible: { opacity: 1, y: 0 },
                         }}
-                    >     <h3 className="text-2xl font-bold gradient-title mb-4 text-purple-200">Your Cosmic Profile</h3> </MotionWrapperDelay>
+                    >
+                        <h3 className="text-2xl font-bold gradient-title mb-4 text-purple-200">Your Cosmic Profile</h3>
+                    </MotionWrapperDelay>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -578,9 +596,11 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, x: 100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >    <p className="text-base mb-4 leading-relaxed">
+                    >
+                        <p className="text-base mb-4 leading-relaxed">
                             Greetings, dear {name}, the cosmos knows you intimately. Born on {birthDayInfo.formattedDate}, the {birthDayInfo.name} ({birthDayInfo.description}), your arrival was marked by a surge of dynamic change. At {age} years, you shine in your {ageCategory.replace("young", "young adult").replace("mid", "mid-life").replace("mature", "wise")} phase, where the energies of {Object.keys(ageWeights[ageCategory]).join(", ")} shape your journey. As a {starSign}, your spirit resonates with {zodiacWeights[starSign]?.primary || "Destiny"} and {zodiacWeights[starSign]?.secondary || "Cosmos"} themes, guiding the Star Cards to illuminate your unique path.
-                        </p></MotionWrapperDelay>
+                        </p>
+                    </MotionWrapperDelay>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -590,7 +610,9 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, x: -100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >   <h4 className="text-lg font-semibold mt-4 mb-2 text-yellow-300">Your Astrological Essence</h4> </MotionWrapperDelay>
+                    >
+                        <h4 className="text-lg font-semibold mt-4 mb-2 text-yellow-300">Your Astrological Essence</h4>
+                    </MotionWrapperDelay>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -600,9 +622,11 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, y: -100 },
                             visible: { opacity: 1, y: 0 },
                         }}
-                    >     <p className="text-base mb-3 leading-relaxed">
+                    >
+                        <p className="text-base mb-3 leading-relaxed">
                             Guided by {astroProfile.planet}, your {astroProfile.zodiac} essence radiates through the {astroProfile.house} house, a realm of {astroProfile.house.split("(")[1].replace(")", "").toLowerCase()}. {astroProfile.traits} {astroProfile.cusp ? `Born on the ${astroProfile.cusp.name}, you embody ${astroProfile.cusp.description.toLowerCase()}` : ""} {astroProfile.lunar} {astroProfile.monthSupport} offers support this month, guiding you with wisdom and strength.
-                        </p> </MotionWrapperDelay>
+                        </p>
+                    </MotionWrapperDelay>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -612,13 +636,15 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, x: 100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >       <ul className="list-disc pl-6 space-y-1.5 text-sm text-gray-300">
+                    >
+                        <ul className="list-disc pl-6 space-y-1.5 text-sm text-gray-300">
                             <li><span className="font-medium text-white">Lucky Colors:</span> {astroProfile.lucky.colors}</li>
                             <li><span className="font-medium text-white">Lucky Gems:</span> {astroProfile.lucky.gems}</li>
                             <li><span className="font-medium text-white">Lucky Days:</span> {astroProfile.lucky.days}</li>
                             <li><span className="font-medium text-white">Lucky Numbers:</span> {astroProfile.lucky.numbers}</li>
                             <li><span className="font-medium text-white">Famous Birthdays:</span> {astroProfile.famousBirthdays.join(", ")}</li>
-                        </ul> </MotionWrapperDelay>
+                        </ul>
+                    </MotionWrapperDelay>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -628,8 +654,9 @@ export default function StarReadingContent() {
                             hidden: { opacity: 0, x: -100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >    <h4 className="text-lg font-semibold mt-4 mb-2 text-yellow-300">Your Name’s Cosmic Vibration</h4> </MotionWrapperDelay>
-
+                    >
+                        <h4 className="text-lg font-semibold mt-4 mb-2 text-yellow-300">Your Name’s Cosmic Vibration</h4>
+                    </MotionWrapperDelay>
                     <p className="text-base mb-3">
                         Your name, {name}, weaves a celestial melody. Each letter carries a sacred vibration, contributing to your numerology number:
                     </p>
